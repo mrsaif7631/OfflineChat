@@ -92,7 +92,7 @@ class MeshEngine(private val ctx: Context, val roomCode: String) {
         connected.clear()
         pending.clear()
         partial.clear()
-        Repo.setPeers(0)
+        Repo.updatePeers(0)
     }
 
     // ================= sending =================
@@ -355,7 +355,7 @@ class MeshEngine(private val ctx: Context, val roomCode: String) {
             pending -= endpointId
             if (result.status.isSuccess) {
                 connected += endpointId
-                Repo.setPeers(connected.size)
+                Repo.updatePeers(connected.size)
                 sendHello(listOf(endpointId))
                 sendInventory(endpointId)
             }
@@ -364,7 +364,7 @@ class MeshEngine(private val ctx: Context, val roomCode: String) {
         override fun onDisconnected(endpointId: String) {
             connected -= endpointId
             partial.keys.removeAll { it.startsWith("$endpointId:") }
-            Repo.setPeers(connected.size)
+            Repo.updatePeers(connected.size)
         }
     }
 
